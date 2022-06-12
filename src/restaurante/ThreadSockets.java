@@ -1,8 +1,6 @@
 package restaurante;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -16,6 +14,10 @@ public class ThreadSockets extends Thread{
         this.socket = s;
     }
 
+    public void adicionaProduto(Produto p){
+        estoque.add(p);
+    }
+
     public void run(){
 
         estoque.add(new Produto(1,"Suco de Maracuja" ,8.50 , 50));
@@ -26,9 +28,14 @@ public class ThreadSockets extends Thread{
             //Entrada de dados
             DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
+            ObjectInputStream entradaObj = new ObjectInputStream(socket.getInputStream());
             String mensagem = entrada.readUTF();
+            System.out.println(mensagem);
 
-            if(mensagem.equals("2")){
+            /*
+            if(mensagem.equals("1")){
+                Mesa m = (Mesa) entradaObj.readObject();
+            } else if(mensagem.equals("2")){
                 String palavra = "";
                 for(Produto p : estoque){
                     palavra += p.toString()+"\n";
@@ -40,8 +47,10 @@ public class ThreadSockets extends Thread{
             } else if (mensagem.equals("4")) {
                 saida.writeUTF("se nao funcionar agora eu vou coringar");
             }
+             */
 
-        }catch (IOException e){
+
+        }catch (Exception e){
             System.out.println("Erro: " + e.toString());
         }
     }

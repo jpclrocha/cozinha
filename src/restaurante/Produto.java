@@ -56,7 +56,4 @@ public class Produto implements Serializable {
     }
 
 
-    public Object getCodigo() {
-        return this.codido;
-    }
 }
