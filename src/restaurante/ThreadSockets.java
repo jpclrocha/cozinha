@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 
 public class ThreadSockets extends Thread{
+    ArrayList<Produto> estoque = new ArrayList<>();
+    ArrayList<Produto> carrinho = new ArrayList<>();
     private Socket socket;
 
     public ThreadSockets (Socket s){
@@ -15,12 +17,9 @@ public class ThreadSockets extends Thread{
     }
 
     public void run(){
-        ArrayList<Produto> estoque = new ArrayList<>();
-        ArrayList<Produto> carrinho = new ArrayList<>();
-        Produto a = new Produto(1,"Suco de Maracuja" ,8.50 , 50);
-        Produto b = new Produto(2,"Strogonoff" ,7 , 100);
-        estoque.add(a);
-        estoque.add(b);
+
+        estoque.add(new Produto(1,"Suco de Maracuja" ,8.50 , 50));
+        estoque.add(new Produto(2,"Strogonoff" ,7 , 100));
         estoque.add(new Produto(3,"Agua" ,2 , 75));
 
         try{
@@ -36,7 +35,7 @@ public class ThreadSockets extends Thread{
                 }
                 saida.writeUTF(palavra);
             } else if (mensagem.equals("3")) {
-                carrinho.add(a);
+
 
             } else if (mensagem.equals("4")) {
                 saida.writeUTF("se nao funcionar agora eu vou coringar");
