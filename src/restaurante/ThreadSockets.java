@@ -1,8 +1,6 @@
 package restaurante;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -17,7 +15,8 @@ public class ThreadSockets extends Thread{
     }
 
     public void run(){
-
+        ArrayList<Mesa> mesasRestaurante = new ArrayList<>();
+        ArrayList<Produto> carrinho = new ArrayList<>();
         estoque.add(new Produto(1,"Suco de Maracuja" ,8.50 , 50));
         estoque.add(new Produto(2,"Strogonoff" ,7 , 100));
         estoque.add(new Produto(3,"Agua" ,2 , 75));
@@ -26,19 +25,23 @@ public class ThreadSockets extends Thread{
             //Entrada de dados
             DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
-            String mensagem = entrada.readUTF();
+            String msg = entrada.readUTF();
 
-            if(mensagem.equals("2")){
-                String palavra = "";
-                for(Produto p : estoque){
-                    palavra += p.toString()+"\n";
+
+            if(msg.equals("3")){
+                String codigo = entrada.readUTF();
+                int codigoInt = Integer.parseInt(codigo);
+                for (Produto p : estoque){
+                    if (p.getCodido() == codigoInt){
+                        carrinho.add(p);
+                    }
                 }
-                saida.writeUTF(palavra);
-            } else if (mensagem.equals("3")) {
-
-
-            } else if (mensagem.equals("4")) {
-                saida.writeUTF("se nao funcionar agora eu vou coringar");
+            } else if (msg.equals("4")) {
+                double total = 0;
+                for (Produto p : carrinho){
+                    total += p.getPreco();
+                }
+                saida.writeUTF(Double.toString(total));
             }
 
         }catch (IOException e){
