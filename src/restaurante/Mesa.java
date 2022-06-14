@@ -64,4 +64,13 @@ public class Mesa implements Serializable {
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
+
+    public String toString(){
+        String palavra = "";
+        palavra += "Nome: " + getNome() +"\n";
+        palavra += "Horario de entrada: " + getEntrada()+"\n";
+        palavra += "Horario de saida: " + getSaida()+"\n";
+        return palavra;
+    }
 }
+

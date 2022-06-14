@@ -27,15 +27,24 @@ public class ThreadSockets extends Thread{
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
             String msg = entrada.readUTF();
 
-
-            if(msg.equals("3")){
-                String codigo = entrada.readUTF();
+            if(msg.equals("2")){
+                String cardapio = "";
+                for(Produto p : estoque){
+                    cardapio += p.toString();
+                }
+                saida.writeUTF(cardapio);
+            } else if(msg.equals("3")){
+                //soh pra ver se entra nesse if
+                System.out.println(msg);
+                /*
                 int codigoInt = Integer.parseInt(codigo);
                 for (Produto p : estoque){
                     if (p.getCodido() == codigoInt){
                         carrinho.add(p);
+                        System.out.println(p);
                     }
                 }
+                 */
             } else if (msg.equals("4")) {
                 double total = 0;
                 for (Produto p : carrinho){

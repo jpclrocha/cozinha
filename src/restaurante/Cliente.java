@@ -9,13 +9,10 @@ import java.util.Scanner;
 public class Cliente {
     static Mesa mesa = new Mesa();
 
-    public static void menu(Socket socket) throws IOException {
-        ArrayList<Produto> estoque = new ArrayList<>();
+    public static void menu(Socket socket) throws IOException, InterruptedException {
 
         DataInputStream entrada = new DataInputStream(socket.getInputStream());
         DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
-        ObjectOutputStream saidaObj = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream entradaObj = new ObjectInputStream(socket.getInputStream());
         System.out.println("1 - Cadastrar Mesa \n2 - Cardapio \n3 - Fazer Pedido \n4 - Pedir conta \n5 - Sair");
         Scanner input = new Scanner(System.in);
         System.out.println("Sua escolha:");
@@ -25,10 +22,8 @@ public class Cliente {
             String nome = input.nextLine();
             mesa.setNome(nome);
         }else if (numero.equals("2")){
-            String cardapio = "";
-            for (Produto p : estoque){
-                cardapio += p.toString() +"\n";
-            }
+            saida.writeUTF("2");
+            String cardapio = entrada.readUTF();
             System.out.println(cardapio);
         }else if(numero.equals("3")){
             saida.writeUTF("3");
@@ -41,14 +36,17 @@ public class Cliente {
             System.out.println(entrada.readUTF());
 
         }else if (numero.equals("5")) {
+            mesa.setSaida();
             System.out.println("Obrigado pelo visita!");
+            System.out.println(mesa.toString());
             entrada.close();
             saida.close();
+            Thread.sleep(2000);
             socket.close();
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         //Abrir a conexão
         Socket socket = new Socket("127.0.0.1",8000);
         while (true){
