@@ -3,14 +3,11 @@ package restaurante;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Cliente {
-    static Mesa mesa = new Mesa();
 
-    public static void menu(Socket socket) throws IOException, InterruptedException {
-
+    public static void menu(Socket socket) throws IOException, InterruptedException{
         DataInputStream entrada = new DataInputStream(socket.getInputStream());
         DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
         System.out.println("1 - Cadastrar Mesa \n2 - Cardapio \n3 - Fazer Pedido \n4 - Pedir conta \n5 - Sair");
@@ -18,13 +15,16 @@ public class Cliente {
         System.out.println("Sua escolha:");
         String numero = input.nextLine();
         if(numero.equals("1")){
-            System.out.println("Digite seu nome para cadastrar uma mesa: ");
+            saida.writeUTF("1");
+            System.out.println("Digite seu nome para cadastrar na mesa:");
             String nome = input.nextLine();
-            mesa.setNome(nome);
+            saida.writeUTF(nome);
+
         }else if (numero.equals("2")){
             saida.writeUTF("2");
             String cardapio = entrada.readUTF();
             System.out.println(cardapio);
+
         }else if(numero.equals("3")){
             saida.writeUTF("3");
             System.out.println("Digite o codigo do produto a ser pedido: ");
@@ -36,9 +36,7 @@ public class Cliente {
             System.out.println(entrada.readUTF());
 
         }else if (numero.equals("5")) {
-            mesa.setSaida();
-            System.out.println("Obrigado pelo visita!");
-            System.out.println(mesa.toString());
+            saida.writeUTF("5");
             entrada.close();
             saida.close();
             Thread.sleep(2000);
@@ -52,14 +50,5 @@ public class Cliente {
         while (true){
             menu(socket);
         }
-
-        /*
-            Scanner input = new Scanner(System.in);
-            String nome = input.nextLine();
-            saida.writeUTF(nome);
-            String novaMensagem = entrada.readUTF();
-            System.out.println(novaMensagem);
-         */
-
     }
 }
