@@ -2,6 +2,7 @@ package restaurante;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -21,9 +22,9 @@ public class ThreadSockets extends Thread{
         estoque.add(new Produto(1,"Suco de Maracuja" ,8.50 , 50));
         estoque.add(new Produto(2,"Strogonoff" ,7 , 100));
         estoque.add(new Produto(3,"Agua" ,2 , 75));
+        try{
+            while (true){
 
-        while (true){
-            try{
                 //Entrada de dados
                 DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
                 DataInputStream entrada = new DataInputStream(socket.getInputStream());
@@ -56,13 +57,13 @@ public class ThreadSockets extends Thread{
                     }
                     saida.writeUTF(Double.toString(total));
                 } else if (msg.equals("5")) {
-                    a.setSaida();
-                    saida.writeUTF(a.toString());
+                    break;
                 }
-
-            }catch (Exception e){
-                System.out.println("Erro: " + e.toString());
             }
+        }catch (SocketException e){
+            System.out.println("Um cliente se desconectou!");
+        }catch (Exception e){
+            System.out.println("Erro: " + e.toString());
         }
     }
 
