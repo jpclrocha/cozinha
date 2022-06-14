@@ -6,6 +6,6 @@ The app should be able to show for the kitchen witch table were booked and the t
 
 # Team
 Clauderlan Batista Alves <br>
-João Pedro de Castro Laranjeira Rocha &nbsp;
-Guilherme Frias de Oliveira Tavares
+João Pedro de Castro Laranjeira Rocha <br>
+Guilherme Frias de Oliveira Tavares <br>
 Maria Luisa Alaquoke Ferreira dos Santos
