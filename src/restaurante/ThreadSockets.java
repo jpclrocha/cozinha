@@ -2,8 +2,6 @@ package restaurante;
 
 import java.io.*;
 import java.net.Socket;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
@@ -24,37 +22,47 @@ public class ThreadSockets extends Thread{
         estoque.add(new Produto(2,"Strogonoff" ,7 , 100));
         estoque.add(new Produto(3,"Agua" ,2 , 75));
 
-        try{
-            //Entrada de dados
-            DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
-            DataInputStream entrada = new DataInputStream(socket.getInputStream());
-            String msg = entrada.readUTF();
+        while (true){
+            try{
+                //Entrada de dados
+                DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
+                DataInputStream entrada = new DataInputStream(socket.getInputStream());
+                String msg = entrada.readUTF();
 
-            if(msg.equals("1")){
-                String nome = entrada.readUTF();
-                a.setNome(nome);
-            }
-            else if(msg.equals("2")){
-                String cardapio = "";
-                for(Produto p : estoque){
-                    cardapio += p.toString();
+                if(msg.equals("1")){
+                    String nome = entrada.readUTF();
+                    a.setNome(nome);
+                    System.out.println(nome);
                 }
-                saida.writeUTF(cardapio);
-            } else if(msg.equals("3")){
-                //soh pra ver se entra nesse if
-                System.out.println(msg);
-            } else if (msg.equals("4")) {
-                double total = 0;
-                for (Produto p : carrinho){
-                    total += p.getPreco();
+                else if(msg.equals("2")){
+                    String cardapio = "";
+                    for(Produto p : estoque){
+                        cardapio += p.toString();
+                    }
+                    saida.writeUTF(cardapio);
+                } else if(msg.equals("3")){
+                    String codigo = entrada.readUTF();
+                    int c = Integer.parseInt(codigo);
+                    for (Produto p : estoque){
+                        if (p.getCodido() == c){
+                            carrinho.add(p);
+                        }
+                    }
+                    System.out.println(carrinho.toString());
+                } else if (msg.equals("4")) {
+                    double total = 0;
+                    for (Produto p : carrinho){
+                        total += p.getPreco();
+                    }
+                    saida.writeUTF(Double.toString(total));
+                } else if (msg.equals("5")) {
+                    a.setSaida();
+                    saida.writeUTF(a.toString());
                 }
-                saida.writeUTF(Double.toString(total));
-            } else if (msg.equals("5")) {
-                a.setSaida();
-            }
 
-        }catch (Exception e){
-            System.out.println("Erro: " + e.toString());
+            }catch (Exception e){
+                System.out.println("Erro: " + e.toString());
+            }
         }
     }
 

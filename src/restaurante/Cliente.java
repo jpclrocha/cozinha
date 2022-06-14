@@ -37,6 +37,8 @@ public class Cliente {
 
         }else if (numero.equals("5")) {
             saida.writeUTF("5");
+            String a = entrada.readUTF();
+            System.out.println(a);
             entrada.close();
             saida.close();
             Thread.sleep(2000);
