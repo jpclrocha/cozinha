@@ -21,20 +21,12 @@ public class ThreadSockets extends Thread{
 
     public void atualizaEstoque(ArrayList<Produto> estoque){
         for(Produto p : estoque){
-            for (Produto b : estoqueCliente){
-                if (p.getCodigo() != b.getCodigo()){
-                    estoqueCliente.add(p);
-                }
-            }
+            estoqueCliente.add(p);
         }
     }
     public void run(){
-        estoqueCliente.add(new Produto(1,"Suco de Maracuja" ,8.50 , 50));
-        estoqueCliente.add(new Produto(2,"Strogonoff" ,7 , 100));
-        estoqueCliente.add(new Produto(3,"Agua" ,2 , 75));
         try{
             while (true){
-
                 //Entrada de dados
                 DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
                 DataInputStream entrada = new DataInputStream(socket.getInputStream());
@@ -43,7 +35,6 @@ public class ThreadSockets extends Thread{
                 if(msg.equals("1")){
                     String nome = entrada.readUTF();
                     a.setNome(nome);
-                    System.out.println(nome);
                 }
                 else if(msg.equals("2")){
                     String cardapio = "";
