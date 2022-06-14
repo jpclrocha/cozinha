@@ -49,9 +49,9 @@ public class Produto implements Serializable {
 
     public String toString(){
         String formata = "";
-        formata += "Codigo do produto: " + getCodido();
-        formata += "\nDescricao do produto: " + getDescricao();
-        formata += "\nPreco: " + getPreco();
+        formata += "Codigo do produto: " + getCodido()+"\n";
+        formata += "Descricao do produto: " + getDescricao()+"\n";
+        formata += "Preco: " + getPreco()+"\n";
         return formata;
     }
 

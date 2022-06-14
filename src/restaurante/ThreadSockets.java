@@ -4,10 +4,11 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class ThreadSockets extends Thread{
-    ArrayList<Produto> estoque = new ArrayList<>();
+    ArrayList<Produto> estoqueCliente = new ArrayList<>();
     ArrayList<Produto> carrinho = new ArrayList<>();
     Mesa a = new Mesa();
     String nome;
@@ -18,10 +19,19 @@ public class ThreadSockets extends Thread{
         a.setCodigo(codigo);
     }
 
+    public void atualizaEstoque(ArrayList<Produto> estoque){
+        for(Produto p : estoque){
+            for (Produto b : estoqueCliente){
+                if (p.getCodigo() != b.getCodigo()){
+                    estoqueCliente.add(p);
+                }
+            }
+        }
+    }
     public void run(){
-        estoque.add(new Produto(1,"Suco de Maracuja" ,8.50 , 50));
-        estoque.add(new Produto(2,"Strogonoff" ,7 , 100));
-        estoque.add(new Produto(3,"Agua" ,2 , 75));
+        estoqueCliente.add(new Produto(1,"Suco de Maracuja" ,8.50 , 50));
+        estoqueCliente.add(new Produto(2,"Strogonoff" ,7 , 100));
+        estoqueCliente.add(new Produto(3,"Agua" ,2 , 75));
         try{
             while (true){
 
@@ -37,16 +47,17 @@ public class ThreadSockets extends Thread{
                 }
                 else if(msg.equals("2")){
                     String cardapio = "";
-                    for(Produto p : estoque){
+                    for(Produto p : estoqueCliente){
                         cardapio += p.toString();
                     }
                     saida.writeUTF(cardapio);
                 } else if(msg.equals("3")){
                     String codigo = entrada.readUTF();
                     int c = Integer.parseInt(codigo);
-                    for (Produto p : estoque){
+                    for (Produto p : estoqueCliente){
                         if (p.getCodido() == c){
                             carrinho.add(p);
+                            p.setQtdDisponivel(p.getQtdDisponivel() - 1);
                         }
                     }
                     System.out.println(carrinho.toString());
@@ -76,4 +87,6 @@ public class ThreadSockets extends Thread{
         palavra += "\nCodigo da mesa: " + a.getCodigo();
         return palavra;
     }
+
+
 }
