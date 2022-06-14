@@ -5,7 +5,7 @@ The costumers sould be able to book a table and to take an order for food.
 The app should be able to show for the kitchen witch table were booked and the total price of the order from each one.
 
 # Team
-Clauderlan Batista Alves
-João Pedro de Castro Laranjeira Rocha
+Clauderlan Batista Alves <br>
+João Pedro de Castro Laranjeira Rocha &nbsp;
 Guilherme Frias de Oliveira Tavares
 Maria Luisa Alaquoke Ferreira dos Santos
